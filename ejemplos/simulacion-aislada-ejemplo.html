@@ -1,0 +1,21 @@
+<!-- Ejemplo de simulación de USUARIO (se ejecuta aislada). Un contador que cuenta hasta 10 con los controles estándar. -->
+<h3>Contador</h3>
+<p id="n" style="font-size:3rem;margin:.2em 0">0</p>
+<script>
+  var n = 0, t = null, vel = 700, max = 10;
+  function mostrar(estado) {
+    document.getElementById('n').textContent = n;
+    UniSim.estado({ estado: estado, indice: n, total: max + 1, mensaje: 'Valor actual: ' + n });
+  }
+  function parar() { clearInterval(t); t = null; }
+  UniSim.registrar({
+    iniciar: function () { if (t || n >= max) return; t = setInterval(function () { n++; if (n >= max) { parar(); mostrar('listo'); } else mostrar('reproduciendo'); }, vel); mostrar('reproduciendo'); },
+    pausar: function () { parar(); mostrar('pausado'); },
+    reiniciar: function () { parar(); n = 0; mostrar('listo'); },
+    paso: function () { parar(); if (n < max) n++; mostrar(n >= max ? 'listo' : 'pausado'); },
+    paso_atras: function () { parar(); if (n > 0) n--; mostrar('pausado'); },
+    velocidad: function (ms) { vel = ms; },
+    parametro: function (clave, valor) { if (clave === 'maximo') { max = valor; mostrar('listo'); } }
+  });
+  mostrar('listo');
+</script>

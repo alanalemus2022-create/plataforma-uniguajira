@@ -1,0 +1,184 @@
+/* =========================================
+   VARIABLES DE TEMA (CLARO POR DEFECTO)
+========================================= */
+@import "tailwindcss";
+
+/* Aquí abajo dejas todas tus variables :root y el resto de tu CSS anterior */
+:root {
+  --fondo: #f1f5f9;
+  --fondo-tarjeta: #ffffff;
+  --fondo-sidebar: #ffffff;
+  --texto-principal: #0f172a;
+  --texto-secundario: #64748b;
+  --borde: #e2e8f0;
+  --primario: #2563eb;
+  --primario-hover: #1d4ed8;
+  --sombra: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radio: 16px;
+}
+
+/* TEMA OSCURO MANUAL APLICADO POR BOTÓN */
+body.tema-oscuro {
+  --fondo: #0f172a;
+  --fondo-tarjeta: #1e293b;
+  --fondo-sidebar: #020617;
+  --texto-principal: #f8fafc;
+  --texto-secundario: #94a3b8;
+  --borde: #334155;
+  --primario: #3b82f6;
+  --primario-hover: #60a5fa;
+  --sombra: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
+
+/* Reseteo corregido con asterisco */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: system-ui, sans-serif; 
+  background: var(--fondo); 
+  color: var(--texto-principal); 
+  overflow-x: hidden; 
+  transition: background-color 0.3s, color 0.3s; /* Animación suave al cambiar de tema */
+}
+
+/* =========================================
+   LAYOUT Y SIDEBAR ENROLLABLE
+========================================= */
+.layout-principal { display: flex; min-height: 100vh; width: 100vw; }
+
+.sidebar {
+  width: 76px;
+  background-color: var(--fondo-sidebar);
+  border-right: 1px solid var(--borde);
+  position: fixed; top: 0; left: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden; z-index: 50; white-space: nowrap;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.sidebar:hover { width: 280px; }
+
+.sidebar-logo {
+  display: flex; align-items: center; padding: 1.5rem;
+  color: var(--primario); font-weight: 800; font-size: 1.2rem;
+  border-bottom: 1px solid var(--borde); margin-bottom: 1rem;
+}
+.sidebar-logo svg { min-width: 28px; width: 28px; height: 28px; margin-right: 1.2rem; }
+.sidebar-logo span { opacity: 0; transition: opacity 0.2s; }
+.sidebar:hover .sidebar-logo span { opacity: 1; transition-delay: 0.1s; }
+
+.sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 0.2rem; padding: 0 0.5rem; }
+
+.sidebar-item {
+  display: flex; align-items: center; padding: 0.8rem 1rem;
+  color: var(--texto-secundario); text-decoration: none; cursor: pointer;
+  border: none; background: transparent; width: 100%; text-align: left;
+  font-size: 1rem; border-radius: 8px; font-weight: 500; transition: all 0.2s;
+}
+
+.sidebar-item:hover, .sidebar-item.activo {
+  background-color: rgba(59, 130, 246, 0.1); color: var(--primario);
+}
+.sidebar-item svg { min-width: 24px; width: 24px; height: 24px; margin-right: 1rem; }
+.sidebar-texto { opacity: 0; transition: opacity 0.2s; }
+.sidebar:hover .sidebar-texto { opacity: 1; transition-delay: 0.1s; }
+
+.contenido-principal { flex: 1; margin-left: 76px; padding: 3rem 5%; transition: margin-left 0.3s; }
+.contenido-principal h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; letter-spacing: -0.02em; }
+
+/* =========================================
+   GRILLA Y TARJETAS CON IMAGEN
+========================================= */
+.grilla-catalogo {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;
+}
+
+.tarjeta {
+  background: var(--fondo-tarjeta); border: 1px solid var(--borde); border-radius: var(--radio);
+  cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; overflow: hidden;
+}
+
+.tarjeta:hover { transform: translateY(-6px); box-shadow: var(--sombra); border-color: var(--primario); }
+
+.tarjeta-imagen {
+  width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid var(--borde);
+  background: #334155;
+}
+
+.tarjeta-contenido { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.tarjeta-contenido h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--texto-principal); }
+.tarjeta-contenido p { color: var(--texto-secundario); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; flex: 1; }
+.creadores-tag { font-size: 0.8rem; color: white; background: var(--primario); padding: 0.3rem 0.8rem; border-radius: 999px; align-self: flex-start; font-weight: 600; }
+
+/* =========================================
+   MODALES (CREAR Y DETALLES)
+========================================= */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+
+.modal-caja {
+  background: var(--fondo-tarjeta); border-radius: var(--radio); width: 90%; max-width: 550px;
+  box-shadow: var(--sombra); position: relative; overflow: hidden; display: flex; flex-direction: column; max-height: 90vh;
+}
+
+.modal-portada { width: 100%; height: 220px; object-fit: cover; }
+.modal-cuerpo { padding: 2rem; overflow-y: auto; }
+.modal-cuerpo h2 { margin-bottom: 1rem; font-size: 1.8rem; }
+.modal-cuerpo p { color: var(--texto-secundario); margin-bottom: 1.5rem; line-height: 1.6; }
+
+.formulario-grupo { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.formulario-grupo label { font-size: 0.9rem; font-weight: 600; }
+.formulario-grupo input, .formulario-grupo textarea {
+  padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--borde);
+  background: var(--fondo); color: var(--texto-principal); font-family: inherit; transition: border 0.2s, background-color 0.2s, color 0.2s;
+}
+.formulario-grupo input:focus, .formulario-grupo textarea:focus { border-color: var(--primario); outline: none; }
+
+.botones-modal { display: flex; gap: 1rem; margin-top: 1rem; justify-content: flex-end; }
+.btn { padding: 0.8rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
+.btn-secundario { background: transparent; color: var(--texto-principal); border: 1px solid var(--borde); }
+.btn-secundario:hover { background: var(--fondo); }
+.btn-primario { background: var(--primario); color: white; }
+.btn-primario:hover { background: var(--primario-hover); }
+.btn-iniciar { width: 100%; font-size: 1.1rem; padding: 1rem; margin-top: 1rem; }
+/* =========================================
+   BOTONES DE GESTIÓN (MIS SIMULACIONES)
+========================================= */
+.acciones-tarjeta {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--borde);
+}
+
+.btn-icono {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--fondo);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  transition: all 0.2s;
+}
+
+.btn-icono:hover {
+  color: var(--primario);
+  border-color: var(--primario);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.btn-icono.peligro:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
